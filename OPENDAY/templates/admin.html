@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1>ADMIN</h1>
+        <ul>
+            <li class="Home"><a href="{{ url_for('home') }}" class="active">Home</a></li>
+            <li><a href="">About</a></li>
+            <li class="dropdown-toggle"><a href="#"><i class="fas fa-bell"></i> <span >3</span></a>
+                <div class="dropdown">
+                    <a class="notif" href="#">Notification 1</a>
+                    <a class="notif" href="#">Notification 2</a>
+                    <a class="notif" href="#">Notification 3</a>
+                </div>
+            </li>
+            <li><a href=""><i class="fas fa-user"></i></a></li>
+        </ul>
+
+    </nav>
+    <main>
+        <div class="wrapper">
+            <div class="grid1">
+                <div class="admin-container">
+                    <h2>Reference links</h2>
+                    <div class="form-group">
+                        <label for="video-link">Link:</label>
+                        <input type="text" id="video-link" placeholder="Enter video link">
+                    </div>
+                    <div class="form-group">
+                        <button onclick="addVideoLink()">Add to Watch</button>
+                    </div>
+                    <ul class="video-list" id="video-list">
+                        <!-- Video links will be added here -->
+                    </ul>
+                </div>
+                
+                <script>
+                    function addVideoLink() {
+                        const videoLinkInput = document.getElementById('video-link');
+                        const videoLink = videoLinkInput.value;
+                        if (videoLink) {
+                            const videoList = document.getElementById('video-list');
+                            const listItem = document.createElement('li');
+                            const link = document.createElement('a');
+                            link.href = videoLink;
+                            link.target = '_blank';
+                            link.textContent = videoLink;
+                
+                            const removeButton = document.createElement('button');
+                            removeButton.textContent = 'Remove';
+                            removeButton.onclick = function() {
+                                videoList.removeChild(listItem);
+                            };
+                
+                            listItem.appendChild(link);
+                            listItem.appendChild(removeButton);
+                            videoList.appendChild(listItem);
+                            videoLinkInput.value = ''; // Clear the input field
+                        }
+                    }
+                </script>
+            </div>
+            <div class="grid2">
+                <div class="admin-panel">
+                    <h2>Update Subject Progress</h2>
+                    
+                    <div class="subject">
+                        <label for="ot">OT:</label>
+                        <input type="number" id="ot" min="0" max="100" placeholder="Enter progress percentage">
+                        <button onclick="updateProgress('ot')">Update OT Progress</button>
+                    </div>
+            
+                    <div class="subject">
+                        <label for="dbms">DBMS:</label>
+                        <input type="number" id="dbms" min="0" max="100" placeholder="Enter progress percentage">
+                        <button onclick="updateProgress('dbms')">Update DBMS Progress</button>
+                    </div>
+            
+                    <div class="subject">
+                        <label for="bio">BIO:</label>
+                        <input type="number" id="bio" min="0" max="100" placeholder="Enter progress percentage">
+                        <button onclick="updateProgress('bio')">Update BIO Progress</button>
+                    </div>
+            
+                    <div class="subject">
+                        <label for="ada">ADA:</label>
+                        <input type="number" id="ada" min="0" max="100" placeholder="Enter progress percentage">
+                        <button onclick="updateProgress('ada')">Update ADA Progress</button>
+                    </div>
+            
+                    <div class="subject">
+                        <label for="cg_v">CG&V:</label>
+                        <input type="number" id="cg_v" min="0" max="100" placeholder="Enter progress percentage">
+                        <button onclick="updateProgress('cg_v')">Update CG&V Progress</button>
+                    </div>
+                </div>
+            
+                <script>
+                    function updateProgress(subject) {
+                        const input = document.getElementById(subject);
+                        const progress = input.value;
+                        if (progress >= 0 && progress <= 100) {
+                            alert(`Updated ${subject.toUpperCase()} progress to ${progress}%`);
+                            // Here you can add code to send the updated progress to your server
+                        } else {
+                            alert('Please enter a valid percentage (0-100)');
+                        }
+                    }
+                </script>
+            </div>
+            <div class="grid3">
+                <div class="event-management">
+                    <h2>Event Management</h2>
+                    <div class="event-form">
+                        <input type="text" id="eventTitle" placeholder="Enter Event Title">
+                        <button onclick="addEvent()">Add Event</button>
+                    </div>
+                    <div class="event-list" id="eventList">
+                        
+                    </div>
+                </div>
+            
+                <script>
+                    function addEvent() {
+    const eventTitleInput = document.getElementById('eventTitle');
+    const eventTitle = eventTitleInput.value.trim();
+
+    if (eventTitle === '') {
+        alert('Please enter an event title.');
+        return;
+    }
+
+    const eventList = document.getElementById('eventList');
+
+    const eventItem = document.createElement('div');
+    eventItem.classList.add('event-item');
+
+    const eventText = document.createElement('span');
+    eventText.textContent = eventTitle;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('delete-btn');
+    deleteButton.textContent = 'Delete';
+    deleteButton.onclick = function () {
+        eventList.removeChild(eventItem);
+    };
+
+    eventItem.appendChild(eventText);
+    eventItem.appendChild(deleteButton);
+
+    eventList.appendChild(eventItem);
+
+    eventTitleInput.value = '';
+}
+                </script>
+            </div>
+            <div class="grid4">
+                <div class="admin-panel">
+                    <h2>Manage Mentors</h2>
+                    
+                    <div class="mentor">
+                        <label for="mentor-name">Mentor Name:</label>
+                        <input type="text" id="mentor-name" placeholder="Enter mentor name">
+            
+                        <label for="mentor-students">Number of Students:</label>
+                        <input type="number" id="mentor-students" placeholder="Enter number of students">
+            
+                        <label for="mentor-designation">Designation:</label>
+                        <input type="text" id="mentor-designation" placeholder="Enter designation">
+            
+                        <label for="mentor-number">Phone Number:</label>
+                        <input type="tel" id="mentor-number" placeholder="Enter phone number">
+            
+                        <label for="mentor-email">Email:</label>
+                        <input type="email" id="mentor-email" placeholder="Enter email">
+            
+                        <button onclick="addMentor()">Add Mentor</button>
+                    </div>
+            
+                    <div id="mentors-list"></div>
+                </div>
+            
+                <script>
+                    function addMentor() {
+                        const name = document.getElementById('mentor-name').value;
+                        const students = document.getElementById('mentor-students').value;
+                        const designation = document.getElementById('mentor-designation').value;
+                        const number = document.getElementById('mentor-number').value;
+                        const email = document.getElementById('mentor-email').value;
+            
+                        if (name && students && designation && number && email) {
+                            const mentorDiv = document.createElement('div');
+                            mentorDiv.className = 'mentor';
+                            mentorDiv.innerHTML = `
+                                <label>Mentor Name:</label>
+                                <input type="text" value="${name}" onchange="updateMentor(this)">
+            
+                                <label>Number of Students:</label>
+                                <input type="number" value="${students}" onchange="updateMentor(this)">
+            
+                                <label>Designation:</label>
+                                <input type="text" value="${designation}" onchange="updateMentor(this)">
+            
+                                <label>Phone Number:</label>
+                                <input type="tel" value="${number}" onchange="updateMentor(this)">
+            
+                                <label>Email:</label>
+                                <input type="email" value="${email}" onchange="updateMentor(this)">
+                                
+                                <button onclick="removeMentor(this)">Remove Mentor</button>
+                            `;
+            
+                            document.getElementById('mentors-list').appendChild(mentorDiv);
+                            clearInputs();
+                        } else {
+                            alert('Please fill in all fields');
+                        }
+                    }
+            
+                    function updateMentor(input) {
+                        // Implement update functionality here
+                        alert(`Updated ${input.previousElementSibling.innerText} to ${input.value}`);
+                    }
+            
+                    function removeMentor(button) {
+                        button.parentElement.remove();
+                    }
+            
+                    function clearInputs() {
+                        document.getElementById('mentor-name').value = '';
+                        document.getElementById('mentor-students').value = '';
+                        document.getElementById('mentor-designation').value = '';
+                        document.getElementById('mentor-number').value = '';
+                        document.getElementById('mentor-email').value = '';
+                    }
+                </script>
+            </div>
+            <div class="grid5">
+                <div class="admin-panel">
+                    <h2>Manage Weekly Schedule</h2>
+                    
+                    <div class="schedule">
+                        <label for="schedule-title">Title:</label>
+                        <input type="text" id="schedule-title" placeholder="Enter title">
+            
+                        <label for="schedule-date">Date:</label>
+                        <input type="date" id="schedule-date">
+            
+                        <label for="schedule-time">Time:</label>
+                        <input type="time" id="schedule-time">
+            
+                        <button onclick="addSchedule()">Add Schedule</button>
+                    </div>
+            
+                    <div id="schedule-list"></div>
+                </div>
+            
+                <script>
+                    function addSchedule() {
+                        const title = document.getElementById('schedule-title').value;
+                        const date = document.getElementById('schedule-date').value;
+                        const time = document.getElementById('schedule-time').value;
+            
+                        if (title && date && time) {
+                            const scheduleItem = document.createElement('div');
+                            scheduleItem.className = 'schedule-item';
+                            scheduleItem.innerHTML = `
+                                <p><strong>Title:</strong> ${title}</p>
+                                <p><strong>Date:</strong> ${date}</p>
+                                <p><strong>Time:</strong> ${time}</p>
+                                <button onclick="removeSchedule(this)">Remove Schedule</button>
+                            `;
+            
+                            document.getElementById('schedule-list').appendChild(scheduleItem);
+                            clearInputs();
+                        } else {
+                            alert('Please fill in all fields');
+                        }
+                    }
+            
+                    function removeSchedule(button) {
+                        button.parentElement.remove();
+                    }
+            
+                    function clearInputs() {
+                        document.getElementById('schedule-title').value = '';
+                        document.getElementById('schedule-date').value = '';
+                        document.getElementById('schedule-time').value = '';
+                    }
+                </script>
+            </div>
+            <div class="grid6">
+                <div class="admin-panel">
+                    <h2>Manage Assignments</h2>
+                    
+                    <div class="assignment">
+                        <label for="assignment-title">Assignment Title:</label>
+                        <input type="text" id="assignment-title" placeholder="Enter assignment title">
+            
+                        <label for="assignment-date">Submission Date:</label>
+                        <input type="date" id="assignment-date">
+            
+                        <button onclick="addAssignment()">Add Assignment</button>
+                    </div>
+            
+                    <div id="assignment-list"></div>
+                </div>
+            
+                <script>
+                    function addAssignment() {
+                        const title = document.getElementById('assignment-title').value;
+                        const date = document.getElementById('assignment-date').value;
+            
+                        if (title && date) {
+                            const assignmentItem = document.createElement('div');
+                            assignmentItem.className = 'assignment-item';
+                            assignmentItem.innerHTML = `
+                                <p><strong>Title:</strong> ${title}</p>
+                                <p><strong>Submission Date:</strong> ${date}</p>
+                                <button onclick="removeAssignment(this)">Remove Assignment</button>
+                            `;
+            
+                            document.getElementById('assignment-list').appendChild(assignmentItem);
+                            clearInputs();
+                        } else {
+                            alert('Please fill in all fields');
+                        }
+                    }
+            
+                    function removeAssignment(button) {
+                        button.parentElement.remove();
+                    }
+            
+                    function clearInputs() {
+                        document.getElementById('assignment-title').value = '';
+                        document.getElementById('assignment-date').value = '';
+                    }
+                </script>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
